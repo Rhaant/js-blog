@@ -28,23 +28,36 @@ function titleClickHandler(){
     console.log(targetAtribute);
 }
 
+function generatePostLinks () {
+
+    // remove all elements from list  
+    let listItems = document.querySelectorAll('.titles li');
+
+    for (let listItem of listItems){
+        listItem.remove();
+}
+
+    let articleLists = document.querySelectorAll('.post');
+    
+    for (let article of articleLists){
+        let  articleId = article.getAttribute('id')
+        let articleTitle = article.querySelector('.post-title').innerHTML
+        let linkHtml = document.createElement('li');
+        linkHtml.innerHTML = `<a href=#${articleId}><span>${articleTitle}</span></a>`;
+        document.querySelector('.titles').append(linkHtml);
+        console.log(linkHtml);
+        console.log(articleId);
+        console.log(articleTitle);
+    }
+    }
+
 /* PROGRAM */
+
+generatePostLinks();
 
 const links = document.querySelectorAll('.titles a');
 
 for(let link of links){
   link.addEventListener('click', titleClickHandler);
 }
-
-
-// const articleNames = document.querySelectorAll('.titles a');
-
-// for (let articleName of articleNames){
-// }
-
-// // const articleIds = document.querySelectorAll('post');
-
-// // for (let articleId of articleIds) {
-    
-// }
 
