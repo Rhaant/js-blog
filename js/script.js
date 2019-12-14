@@ -51,7 +51,7 @@ function generatePostLinks () {
     }
     }
 
-    function generateTags() {
+function generateTags() {
         removeTags();
         const articles = document.querySelectorAll('.posts article');
 
@@ -59,7 +59,7 @@ function generatePostLinks () {
             const dataTags = article.getAttribute('data-tags').split(' ');
             for (let dataTag of dataTags){
                 const tag = document.createElement('li');
-                tag.innerHTML = `<a href=#${dataTag}><span>${dataTag}&nbsp;</span></a>`;
+                tag.innerHTML = `<a href=#tag-${dataTag}><span>${dataTag}&nbsp;</span></a>`;
                 article.querySelector('.list').appendChild(tag);
                 console.log(dataTag);
             }
@@ -67,7 +67,7 @@ function generatePostLinks () {
         }
     }
 
-    function removeTags(){
+function removeTags(){
         const tags = document.querySelectorAll('.post-tags .list li');
 
         for (let tag of tags) {
@@ -75,14 +75,41 @@ function generatePostLinks () {
         }
     }
 
+function tagClickHandler(){
+    event.preventDefault();
+    const href = this.getAttribute('href');
+    console.log(href);
+    const tags = document.querySelectorAll('.active');
+    for (let tag of tags){
+        tag.classList.remove('active');
+        console.log(tag);
+    }
+    const activeTags = document.querySelectorAll(`article a[href="${href}"]`);
+    console.log(activeTags);
+    for (let activeTag of activeTags){
+        console.log(activeTag.closest('article'))
+        // console.log(activeTag);
+    }
+
+
+}
+
+function addClickListenersToTags(){
+    const links = document.querySelectorAll('.post-tags a');
+    for (let link of links){
+        link.addEventListener('click', tagClickHandler);
+    }
+}
+
+
 /* PROGRAM */
 
 generatePostLinks();
+generateTags();
+addClickListenersToTags();
 
 const links = document.querySelectorAll('.titles a');
 
 for(let link of links){
   link.addEventListener('click', titleClickHandler);
 }
-
-generateTags();
