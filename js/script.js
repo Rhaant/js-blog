@@ -40,7 +40,7 @@ function generatePostLinks () {
     let articleLists = document.querySelectorAll('.post');
     
     for (let article of articleLists){
-        let  articleId = article.getAttribute('id')
+        let articleId = article.getAttribute('id')
         let articleTitle = article.querySelector('.post-title').innerHTML
         let linkHtml = document.createElement('li');
         linkHtml.innerHTML = `<a href=#${articleId}><span>${articleTitle}</span></a>`;
