@@ -19,8 +19,8 @@ function remove () {
     }
 
 function titleClickHandler(){ 
-    event.preventDefault();
     remove();
+    event.preventDefault();
     this.classList.add('active')
     let atribute = this.getAttribute('href');
     let targetAtribute = document.querySelector(atribute);
@@ -45,10 +45,34 @@ function generatePostLinks () {
         let linkHtml = document.createElement('li');
         linkHtml.innerHTML = `<a href=#${articleId}><span>${articleTitle}</span></a>`;
         document.querySelector('.titles').append(linkHtml);
-        console.log(linkHtml);
-        console.log(articleId);
-        console.log(articleTitle);
+        // console.log(linkHtml);
+        // console.log(articleId);
+        // console.log(articleTitle);
     }
+    }
+
+    function generateTags() {
+        removeTags();
+        const articles = document.querySelectorAll('.posts article');
+
+        for( let article of articles) {
+            const dataTags = article.getAttribute('data-tags').split(' ');
+            for (let dataTag of dataTags){
+                const tag = document.createElement('li');
+                tag.innerHTML = `<a href=#${dataTag}><span>${dataTag}&nbsp;</span></a>`;
+                article.querySelector('.list').appendChild(tag);
+                console.log(dataTag);
+            }
+
+        }
+    }
+
+    function removeTags(){
+        const tags = document.querySelectorAll('.post-tags .list li');
+
+        for (let tag of tags) {
+           tag.remove();
+        }
     }
 
 /* PROGRAM */
@@ -61,3 +85,4 @@ for(let link of links){
   link.addEventListener('click', titleClickHandler);
 }
 
+generateTags();
