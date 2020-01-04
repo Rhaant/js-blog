@@ -129,6 +129,9 @@ function generateAuthors() {
   let authorsList = [];
   for (let newAuthor of newAuthors){
     const authorData = newAuthor.getAttribute('data-author');
+    const authorPost = newAuthor.querySelector('p');
+    authorPost.innerHTML = `<a href="${authorData}"><span>${authorData}</span></a>`;
+    authorPost.querySelector('a').addEventListener('click', authorsClickHandler);
     if (authorsList.includes(authorData)){
       continue;
     }else {
@@ -136,7 +139,7 @@ function generateAuthors() {
       const authorTag = document.createElement('li');
       authorTag.innerHTML = `<a href="${authorData}"><span class="author-name">${authorData}</span></a>`;
       //   console.log(authorData);
-      document.querySelector('ul.authors').appendChild(authorTag);  
+      document.querySelector('ul.authors').appendChild(authorTag); 
     }
 
       
@@ -146,19 +149,20 @@ function generateAuthors() {
 
 function authorsClickHandler(){
   event.preventDefault();
+  console.log(document.querySelector('ul.list.titles'));
   removePostLinks();
-  //   console.log(this);
+
   const href = this.getAttribute('href');
-  //   console.log(href);
   const articleAuthors = document.querySelectorAll(`[data-author="${href}"]`);
-  //   console.log(articleAuthors);
   for (let articleAuthor of articleAuthors){
     const articleID = articleAuthor.getAttribute('id');
-    // console.log(articleID);
-    const tagLink = document.createElement('li');
-    tagLink.innerHTML = `<a href=#${articleID}><span>${articleID}</span</a>`;
-    document.querySelector('.titles').appendChild(tagLink);
-  }
+    let tagLink = document.createElement('li');
+    tagLink.innerHTML = `<a href=#${articleID}><span>${articleID}</span></a>`;
+    document.querySelector('ul.list.titles').append(tagLink);
+    let postLinkList = document.querySelector('ul.list.titles');
+    postLinkList.appendChild(tagLink);
+
+    }
 }
 
 function generateAuthorsLink() {
@@ -198,6 +202,24 @@ function generateTagsLinks() {
   console.log(min, max);
 }
 
+// function generateAuthors () {
+//   const articles = document.querySelectorAll('article');
+//   for (let article of articles){
+//     const authorName = article.getAttribute('data-author');
+//     // const authorId = article.getAttribute('id');
+//     let authorLink = article.querySelector('.post-author');
+//     authorLink.innerHTML = `<a href=#><span>${authorName}</span></a>`;
+//   }
+// }
+
+// function authorClick
+
+function generateAuthorsName () {
+  let authorNames = document.querySelectorAll('article');
+  for (let authorName of authorNames){
+
+  }
+}
 
 
 
