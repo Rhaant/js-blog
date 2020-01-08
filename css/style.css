@@ -109,14 +109,17 @@ body {
 }
 
 .tag-size-3 {
-  font-size: 130%;
+  font-size: 150%;
+  display: inline-block;
 }
 
 .tag-size-2 {
-  font-size: 115%;
+  font-size: 125%;
+  display: inline-block;
 }
 
 .tag-size-1 {
   font-size: 100%;
+  display: inline-block;
 }
 /*# sourceMappingURL=style.css.map */

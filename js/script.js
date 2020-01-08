@@ -1,6 +1,12 @@
 /* eslint-disable linebreak-style */
 'use strict';
 
+const templates = {
+  articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
+  tagLink: Handlebars.compile(document.querySelector('#template-tag-link').innerHTML),
+  authorLink: Handlebars.compile(document.querySelector('#template-author-link').innerHTML)
+}
+
 let fontSize = 0;
 /* FUNKCJE */
 
@@ -50,7 +56,9 @@ function generatePostLinks () {
     let articleId = article.getAttribute('id');
     let articleTitle = article.querySelector('.post-title').innerHTML;
     let linkHtml = document.createElement('li');
-    linkHtml.innerHTML = `<a href=#${articleId}><span>${articleTitle}</span></a>`;
+    // linkHtml.innerHTML = `<a href=#${articleId}><span>${articleTitle}</span></a>`;
+    const linkHTMLData = {id: articleId, title: articleTitle};
+    linkHtml.innerHTML = templates.articleLink(linkHTMLData);
     document.querySelector('.titles').append(linkHtml);
     // console.log(linkHtml);
     // console.log(articleId);
@@ -66,7 +74,9 @@ function generateTags() {
     const dataTags = article.getAttribute('data-tags').split(' ');
     for (let dataTag of dataTags){
       const tag = document.createElement('li');
-      tag.innerHTML = `<a href=#tag-${dataTag}><span>${dataTag}&nbsp;</span></a>`;
+      const tagHTMLData = {id: dataTag, title: dataTag};
+      tag.innerHTML = templates.tagLink(tagHTMLData);
+      // tag.innerHTML = `<a href=#tag-${dataTag}><span>${dataTag}&nbsp;</span></a>`;
       article.querySelector('.list').appendChild(tag);
     //   console.log(dataTag);
     }
@@ -97,7 +107,9 @@ function tagClickHandler(){
     const hrefTag = activeTag.closest('article').getAttribute('id');
     const postLinkName = activeTag.closest('article').querySelector('.post-title').innerHTML;
     const newTag = document.createElement('li');
-    newTag.innerHTML = `<a href=#${hrefTag}><span>${postLinkName}</span</a>`;
+    const tagHTMLData = {id: hrefTag, title: postLinkName};
+    newTag.innerHTML = templates.tagLink(tagHTMLData);
+    // newTag.innerHTML = `<a href=#${hrefTag}><span>${postLinkName}</span</a>`;
     document.querySelector('.wrapper ul').appendChild(newTag);
     // console.log(hrefTag);
     // console.log(postLinkName);
@@ -127,22 +139,26 @@ function generateAuthors() {
   }
   const newAuthors = document.querySelectorAll('article');
   let authorsList = [];
+  const authorCounter = {};
   for (let newAuthor of newAuthors){
     const authorData = newAuthor.getAttribute('data-author');
+    authorsList.push(authorData);
     const authorPost = newAuthor.querySelector('p');
-    authorPost.innerHTML = `<a href="${authorData}"><span>${authorData}</span></a>`;
+    const tagHTMLData = {id: authorData, title: authorData};
+    authorPost.innerHTML = templates.tagLink(tagHTMLData);
+    // authorPost.innerHTML = `<a href="${authorData}"><span>${authorData}</span></a>`;
     authorPost.querySelector('a').addEventListener('click', authorsClickHandler);
-    if (authorsList.includes(authorData)){
-      continue;
-    }else {
-      authorsList.push(authorData);
-      const authorTag = document.createElement('li');
-      authorTag.innerHTML = `<a href="${authorData}"><span class="author-name">${authorData}</span></a>`;
-      //   console.log(authorData);
-      document.querySelector('ul.authors').appendChild(authorTag); 
-    }
-
       
+  }
+  authorsList.forEach(function(author){
+    authorCounter[author] = (authorCounter[author] || 0)+1;
+  });
+  for (let key in authorCounter){
+    const linkHtml = document.createElement('li');
+    const linkHTMLData = {id: key, title: key, counter: authorCounter[key] };
+    linkHtml.innerHTML = templates.authorLink(linkHTMLData);
+    // linkHtml.innerHTML = `<a href="${key}"><span class="author-name">${key}&nbsp; ${authorCounter[key]}</span></a>`;
+    document.querySelector('ul.authors').appendChild(linkHtml);
   }
 
 }
@@ -157,7 +173,9 @@ function authorsClickHandler(){
   for (let articleAuthor of articleAuthors){
     const articleID = articleAuthor.getAttribute('id');
     let tagLink = document.createElement('li');
-    tagLink.innerHTML = `<a href=#${articleID}><span>${articleID}</span></a>`;
+    const tagHTMLData = {id: articleID, title: articleID};
+    tagLink.innerHTML = templates.tagLink(tagHTMLData);
+    // tagLink.innerHTML = `<a href=#${articleID}><span>${articleID}</span></a>`;
     document.querySelector('ul.list.titles').append(tagLink);
     let postLinkList = document.querySelector('ul.list.titles');
     postLinkList.appendChild(tagLink);
@@ -189,7 +207,9 @@ function generateTagsLinks() {
   //   console.log(tagsCounter);
   for (let key in tagsCounter){
     const linkHtml = document.createElement('li');
-    linkHtml.innerHTML = `<a href=#tag-${key}><span>${key}&nbsp;</span></a>`;
+    const tagHTMLData = {id: key, title: key};
+    linkHtml.innerHTML = templates.tagLink(tagHTMLData);
+    // linkHtml.innerHTML = `<a href=#tag-${key}><span>${key}&nbsp&nbsp;</span></a>`;
     fontSize = Math.floor((tagsCounter[key]+1)*0.5);
     linkHtml.classList.add(`tag-size-${fontSize}`);
     document.querySelector(`aside .tags`).appendChild(linkHtml);
@@ -202,17 +222,6 @@ function generateTagsLinks() {
   console.log(min, max);
 }
 
-// function generateAuthors () {
-//   const articles = document.querySelectorAll('article');
-//   for (let article of articles){
-//     const authorName = article.getAttribute('data-author');
-//     // const authorId = article.getAttribute('id');
-//     let authorLink = article.querySelector('.post-author');
-//     authorLink.innerHTML = `<a href=#><span>${authorName}</span></a>`;
-//   }
-// }
-
-// function authorClick
 
 function generateAuthorsName () {
   let authorNames = document.querySelectorAll('article');
